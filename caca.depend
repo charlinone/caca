@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1488021655 source:d:\src\llvm-kaleidos\src\studytmp\kaleid3\caca\main.cpp
+	"llvm\ADT\STLExtras.h"
+	<algorithm>
+	<cctype>
+	<cstdio>
+	<cstdlib>
+	<map>
+	<memory>
+	<string>
+	<vector>
+
