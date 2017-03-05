@@ -372,6 +372,38 @@ static std::unique_ptr<FunctionAST> ParseTopLevelExpr() {
   return nullptr;
 }
 
+//===----------------------------------------------------------------------===//
+// Top-Level parsing
+//===----------------------------------------------------------------------===//
+
+static void HandleDefinition() {
+  if (ParseDefinition()) {
+    fprintf(stderr, "Parsed a function definition.\n");
+  } else {
+    // Skip token for error recovery.
+    getNextToken();
+  }
+}
+
+static void HandleExtern() {
+  if (ParseExtern()) {
+    fprintf(stderr, "Parsed an extern\n");
+  } else {
+    // Skip token for error recovery.
+    getNextToken();
+  }
+}
+
+static void HandleTopLevelExpression() {
+  // Evaluate a top-level expression into an anonymous function.
+  if (ParseTopLevelExpr()) {
+    fprintf(stderr, "Parsed a top-level expr\n");
+  } else {
+    // Skip token for error recovery.
+    getNextToken();
+  }
+}
+
 
 
 
@@ -387,23 +419,16 @@ static void MainLoop() {
   while (true) {
     fprintf(stderr, "ready> ");
     switch (CurTok) {
-    case tok_eof:
-      return;
-    case ';': // ignore top-level semicolons.
-      getNextToken();
-      break;
-    case tok_def:
-    	      getNextToken();
-           break;
-    case tok_extern:
-    	      getNextToken();
-          break;
-    default:
-    	      getNextToken();
-        break;
+    case tok_eof:    return;
+    case ';':        getNextToken(); break;  // ignore top-level semicolons.
+    case tok_def:    HandleDefinition(); break;
+    case tok_extern: HandleExtern(); break;
+    default:         HandleTopLevelExpression(); break;
     }
-  }
+
 }
+}
+
 
 int main() {
 
